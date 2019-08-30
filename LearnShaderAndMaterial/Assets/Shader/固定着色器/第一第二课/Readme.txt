@@ -1,1 +1,0 @@
-本节课。我们学习了Unity Shader的基本写法框架，以及学习了Shader中Properties（属性）的详细写法，光照、材质与颜色的具体写法。写了6个Shader作为本文Shader讲解的实战内容
