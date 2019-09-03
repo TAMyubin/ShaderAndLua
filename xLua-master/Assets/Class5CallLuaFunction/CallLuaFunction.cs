@@ -16,6 +16,8 @@ public class CallLuaFunction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+       
         luaEnv = new LuaEnv();
         luaEnv.AddLoader((ref string path) =>
         {
@@ -32,13 +34,13 @@ public class CallLuaFunction : MonoBehaviour
         //Add = null;
 
         //2.将函数映射到自定义委托中
-       // Add add;
-       // add = luaEnv.Global.Get<Add>("Add");
-       //int c = add(550, 50);
-       // print(c);
-       // add = null;
+        // Add add;
+        // add = luaEnv.Global.Get<Add>("Add");
+        //int c = add(550, 50);
+        // print(c);
+        // add = null;
 
-
+   
 
         //3.可以自定义委托获取lua中多个返回值
         Add2 add;
