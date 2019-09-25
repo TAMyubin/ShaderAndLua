@@ -1,0 +1,186 @@
+-- user ="Boss"
+-- function test( ... )
+-- 	-- body
+-- 	for i = 1,10 do
+-- 		print(i)
+-- 	end
+-- end
+-- function Set_func( fun )
+-- 	-- body
+-- 	function CallFunc( ... )
+-- 		-- body
+-- 		if user =="Boss" then
+-- 			print("欢迎使用本系统")
+-- 		 fun();
+-- 	else
+-- 		print("权限不足")
+-- 	end
+-- end
+-- return CallFunc
+-- end
+-- test = Set_func(test);
+-- test();
+
+--定义一个空表，相当于声明一个类
+-- person = {}
+-- person.name ="谭羽彬"
+-- person.Sex = "男"
+-- person.Age = "20"
+-- function person.Speak( ... )
+-- 	-- body
+-- 	print("请说话")
+-- end
+-- --相当于person.Speak = function()
+-- function person.Walking( ... )
+-- 	-- body
+-- 	print("在走路")
+-- end
+-- function person:ShowInfo(  )
+-- 	-- body
+-- 	print("个人信息：")
+-- 	print("姓名："..self.name.."性别:"..self.Sex.."年龄："..self.Age)
+-- 	-- person.Speak()
+-- 	-- person.Walking()
+-- end
+
+-- --person.ShowInfo()
+-- a=person  --把person赋值给a
+-- --person = nil
+-- a:ShowInfo(a)
+-- tb = {1,2,3,4,5}
+-- a,b,c,d,e = unpack(tb)
+-- print(a,b,c,d,e)
+-- function testFun(str1,str2,str3 )
+-- 	-- body
+-- 	print(str3,str2,str1)
+-- end
+-- tb1 = {"sfasfa","时尚风格","148415"}
+-- testFun(tb1[1],tb[2],tb[3])
+-- testFun(unpack(tb1))
+-- Array = {11,22,33,44,55}
+-- Array2 = Array
+-- Array[2] = 88
+-- for k,v in pairs(Array2) do
+-- 	print(k,v)
+-- end
+-- doubleArray={}
+-- doubleArray[1] = {22,33,44,15}
+-- doubleArray[2] = {66,77,55,11}
+-- doubleArray[3] = {54,64,87,13}
+-- --二维数组定义方式简化
+-- doubleArray = {
+-- 	{22,33,44,15},
+-- 	{66,77,55,11},
+-- 	{54,64,87,13}
+-- }
+-- doubleArray = {}
+-- --定义二维数组的初始化函数
+-- function CreateDoubleArray( Row,Col )
+-- 	-- body
+-- 	for i=1,Row do
+-- 		doubleArray[i] ={}
+-- 		for j=1,Col do
+-- 			doubleArray[i][j] = 0
+-- 		end
+-- 	end
+-- end
+-- CreateDoubleArray(3,2)
+-- --遍历二维数组
+-- for i=1,#doubleArray do
+-- 	local lineShow = ""
+-- 	for j=1,#doubleArray[i] do
+-- 		lineShow = lineShow..doubleArray[i][j].."  "
+-- 	end
+-- 	print(lineShow)
+-- end
+-- --简化二维数组的迭代输出
+-- 	for k,v in pairs(doubleArray) do
+-- 		print(unpack(v))
+-- 	end
+
+-- --定义“原始表”
+-- tab1 = {10,20,30}
+-- tab2 = {20,30,40}
+-- --直接相加会报错
+-- --tabRes = tab2+tab1
+-- --1.定义元表(空表)
+-- setTable = {}
+-- --2.定义元素的加法函数
+-- --函数名是特定的，函数名代表函数行为
+-- --参数传入两个表，第一个表是加号左边的元素，第二个表是加号右边的表
+-- function setTable.__add(tab1,tab2)
+-- 	-- body
+-- 			local AddTableRes = {}
+-- 	for k,v in pairs(tab1) do
+-- 	if v ==nil then
+-- 		break
+-- 	end
+-- 	AddTableRes[k] = tab1[k] + tab2[k]
+-- end
+-- return AddTableRes
+-- end
+-- --3设置元表
+-- --哪个表可以有元表的行为，就给哪个表设置对应元素
+-- setmetatable(tab1,setTable)
+-- setmetatable(tab2,setTable)
+-- --4.测试表的相加
+-- tabRes = tab2+tab1
+-- print(unpack(tabRes))
+
+	-- tab1 = {
+	-- 	year =2019,
+	-- 	month = 9,
+	-- 	day = 2
+	-- }
+	-- local setTable = {}
+	-- function setTable.__tostring( table )
+	-- 	-- body
+	-- 	local Result = string.format("%s - %s - %s ",table.year,table.month,table.day)
+	-- 	return Result
+	-- end
+	-- setTable.__metatable = "无法访问"
+	-- setmetatable(tab1,setTable)
+	-- print(tab1)
+	-- --setmetatable(tab1,{})
+	-- print(getmetatable(tab1))
+
+	-- tab = {str1 = "sdsdsds"}
+	-- tab.str2 = "Tam"
+	-- setTable = {}
+	-- function setTable.__newindex( self,k,v )
+	-- 	-- body
+	-- 	rawset(self,k,v)
+	-- 	print("检测到给当前表添加数据K= "..k.." v= "..v)
+	-- end
+	-- setmetatable(tab,setTable)
+	-- 	tab.str3 = "yu"
+	-- 	print(tab.str3)
+
+	-- tab1 = setmetatable({str1 = "Tam"},
+	-- 	{__newindex = function (self,k,v )
+	-- 		-- body
+	-- 		rawset(self,k,v)
+	-- 		print("检测到给当前表添加数据K= "..k.." v= "..v)
+	-- 	end})
+	-- tab1.str3 = "yu"
+	-- print(tab1.str3)
+-- mytable = setmetatable(
+-- 	{name = "TAM",
+-- 	age = 20},
+-- 	{
+-- 	__call = function ( self )
+-- 		-- body
+-- 		print("call元方法被调用",self.name)
+-- 	end
+-- 	}
+-- 	)
+-- mytable()
+-- person = {}
+-- person.name = "TAM"
+-- person.Sex = "男"
+-- function person:PersonInfo( ... )
+-- 	-- body
+-- 	print(string.format("人员名字 %s 性别 %s",self.name,self.Sex))
+-- end
+-- print(person.name)
+-- person:PersonInfo()

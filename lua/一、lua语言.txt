@@ -1,0 +1,563 @@
+		一、lua语言
+			1.巴西大学研究项目，1993年开发完成，Lua是由C编写完成
+			2.lua方便与其他语言集成，无需编译，利于集成和扩展
+
+		二、热更新原理
+			1.什么是热更新
+				没有热更新，用户体验游戏的流程
+					做游戏->打包->用户下载->用户安装->游玩
+				有热更新，用户体验游戏的流程
+					做游戏->用户下载->游玩
+					由于C#属于编译型语言，无法热更新。传统需要重新下载整个安装包，游戏体验差
+
+					2.如何使用lua实现热更新
+					在客户端嵌入lua解释器，由于lua代码无需编译，只需虚拟机解释执行，所以只要有lua虚拟机的硬件就可以运行lua代码
+
+					3.热更新技术
+					lua
+					C#light
+					C# 反射（苹果不支持）
+					4.lua解析技术
+					ulua（个人维护）
+					tolua（ulua基础上改变，个人维护 技术成熟）
+					xlua（腾讯维护 最新技术 不成熟）
+
+					学习/改变能力
+		三、标识符与关键字
+			1.不能数字开头
+			在lua中尽量避免使用“下划线+大写字母”命名，可能与lua内置标识符冲突
+			2.lua中的关键字
+			if break do else elseif end等\
+		四、变量
+			1.lua中是弱类型语言 无需声明变量类型
+			2.lua语句不需要分号结尾，但是使用分号没有影响
+			3.print()是lua内置函数（方法）
+			4.lua字符串中的定义，可以用双引号也可以用单引号
+			5.C#在使用变量前必须定义，lua中无需定义变量直接使用
+			6.nil是一个lua中的数据类型，销毁变量
+			7.lua中变量类型可以随时更改
+		五、注释
+			单行注释  	--双横杠 减号
+			多行注释	 	-- [[注释内容]]--
+		六、字符串
+			1.在lua字符串的拼接用拼接运算符 ..
+			2.字符串的运算
+			 普通字符串不能使用任何 加减乘除等运算符连接
+			 注意：只有当字符串表示的内容是数字的时候才可以参与运算
+			 字符串表示数字时也可以与数字参与运算
+		七.lua中的数据类型
+			lua中虽然不需要定义数据类型，但是lua中存在数据类型的概念
+			1.在lua中可以使用内置函数 type()来检测lua中某个数据的数据类型 
+			2.lua中的数据类型
+			（1）nil 表示一个无效值 不占用内存 
+			（2） string 表示一个字符串
+			（3）boolean 只有两个值true false
+			所有数组变量都是ture 只有nil代表false 
+			（4）function 函数类型
+			（5）table	表类型，lua中唯一的数据结构
+			（6）userdata用户数据类型
+			(7)thread 表示协程
+			(8)number 所有数字都是number
+		八.lua中的运算符
+			1.算术运算符
+				+-*/ 加减乘除
+				lua中的除法 
+				不区分整数类型和浮点类型的除法
+				%	取余
+				lua中不存在自加自减等运算
+				^	指数运算符
+
+			2.关系运算符
+				==	等于
+				><	大于小于
+				~=	不等于
+
+			3.逻辑运算符
+				and（&&）	逻辑与， 若前者为false，则返回前者，否则返回后者
+				or（||）		逻辑或	若前者为true，则返回前者，否则返回后者
+				not（！）	逻辑非	true变false，false变true
+
+				lua中不存在三目运算符		
+				a ? b : c 特点：有返回值 运算结果是一个值
+				若果a为真，远算结果返回b 的值 否则返回c的值
+				a and b or c 
+				如果b不是false 那么不满足三目运算符
+			4.其他运算符
+				#	计算集合长度运算符
+				..	字符串连接运算符
+
+		九.多重赋值
+			可以同时给多个变量赋值
+			lua总是可以将赋值运算符右边值的个数调整到与左边一致的情况
+
+			斐波那契数列，
+		a,b = b,a+b;
+		print(a,b)
+		a,b = b,a+b;
+		print(a,b)
+		a,b = b,a+b;
+		print(a,b)
+		a,b = b,a+b;
+		print(a,b)
+		a,b = b,a+b;
+		print(a,b)
+		十.lua中变量的作用域
+			在lua中定义的变量全部属于全局变量
+			需要定义局部变量要用于local关键字
+
+		十一、流程控制语句
+			单分支的条件语句
+			if 语句 then
+			<body>
+			end
+			双分支
+			if 条件 then
+				<body>
+			else
+				<body>
+			end
+			多分支
+			if 语句 then
+			<body>
+			end
+			双分支
+			if 条件 then
+				<body>
+			elseif	条件	then
+				<body>
+			else
+				<body>
+			end
+			1.if必须要配合then
+			2.elseif必须连着写，并且需要配合then使用
+			3.if后的条件可以加括号也可以不加括号
+			4.必须要以end结尾
+		十二、循环语句
+			死循环不会造成计算机卡死，会造成进程卡死
+			1.while
+				while 循环条件 do 
+					<循环体>
+				end
+			2.repeat(do..while)
+			repeat
+				<循环体>
+				until(条件)
+					条件为true时退出循环
+					无论条件是否成立至少会执行一次循环体
+
+			3.for
+				for 循环变量 = 初始值,结束值，（步长） do
+					<循环体>
+				end
+				1.初始值，结束值，步长都可以是小数
+				2.初始值，结束值，步长都可以用变量代替
+				3.循环次数的公式（结束值-初始值）/步长
+
+			lua中的泛型for循环
+			for 循环列表 in 迭代函数 do
+				<循环体>
+			end
+			4.ipairs与pairs
+			迭代函数
+			ipairs 顺序遍历集合（序号不能断开，遇到nil就停止遍历）
+			ipairs：函数有三个返回值
+			1.第一个返回值是一个迭代函数
+			2.第二个返回值是传入的集合
+			3.第三个返回值是当前集合遍历到的位置
+			pairs 一定会遍历完整个集合 遇到空的元素不会输出
+
+		十三、表（table）
+			
+			表是一种数据类型
+			（1）表的声明
+		tb = {}--声明了一个空表
+		print(type(tb))
+			(2)lua表中可以放任意类型的数据
+			(3)lua表的大小可以随意拓展
+			（4）表的销毁
+			tb = {1,2,"我爱你"}--声明了一个空表
+			tb = nil
+			(5)表的长度用#（表中不能存在空元素（nil））
+			tb = {1,2,"我爱你"}--声明了一个空表
+			print(#tb)
+			(6)如果直接用print函数打印表名，会直接输出table：表的内存地址
+			（7）表的赋值会将旧表的地址赋给新表
+			(8)数组风格表和字典风格表可以混合使用
+			1.数组风格的表结构
+				（1）数组风格表的声明 tb={1,2,3}
+				(2)访问数组表中的元素 tb[2]--表名【元素下标从1开始】
+				更改表中的元素 tb[1] = 500
+				(3)lua中数组下标可以是任意数字，如果该下标的元素不存在则为nil
+				lua中不存在数组越界的错误
+				（4）lua中数组下标不连续
+				（5）遍历数组风格的表 
+
+
+			2.字典风格的表结构
+			（1）声明方法 表名 = {键 = 值，键 = 值}
+			（2）访问字典中的元素 表名【“键”】
+								表名.键
+
+				（3）可以用任意的类型做键 除了nil
+				如果不用字符串做键只能通过
+				表名【“键”】这种方法来访问
+				（4）添加键值对的方法
+				（5）遍历字典风格的表结构只能用pairs
+				for k,v in pairs(tb) do --k是键 v是值
+					print(k,v)
+				end
+
+		十四、lua中的函数
+			1.函数的定义
+			(1)
+					function 函数名( 参数1，参数2 )
+						-- 函数体
+					end
+					(2)
+					函数名 = function (参数1，参数2 )
+						-- 函数体
+					end
+			2.函数的调用
+				函数名（参数1，参数2）
+			3.函数的返回值
+				在函数体中使用 return 返回值，来返回函数体中的变量
+			lua函数的基本性质
+			A：无需定义返回类型，可以返回任意类型和数量的数据
+			B：函数的参数无需定义类型
+			C：函数无需大括号
+			D：可以把函数赋值给变量
+
+			4.函数中的全局与局部变量
+			A：在函数中定义的变量是全局变量
+			B：想要在函数中定义局部变量要加 local 标识符
+			注意： 在函数体内部定义变量尽量全定义为局部变量
+			如果在相同作用域内有重名变量，那么后面 的变量会覆盖前面的变量
+
+			5.一个函数返回多个返回值
+			function cho( a,b )
+			return a + b,10
+		end
+		num1,num2 = cho(1,3)
+		print(num1,num2)
+		print(cho(1,6))
+
+			6.函数可以作为参数进行传递（相当于C#中的委托，事件）
+			myprimnt = function (param )
+			print("自定义打印函数 - ##" ,param,"##")
+		end
+		function add( num1,num2,functionPrint )
+			resule = num1 + num2
+
+			--调用形参传递的函数
+			functionPrint(resule)
+		end
+
+		myprimnt("99")
+		--myprint 函数作为参数传递
+		add(99,99,myprimnt)
+		7.参数简化
+			函数若只有一个参数，并且此参数是一个字符串或者table，
+			则（实参）圆括号可以省略
+			这种语法被叫做“参数简化”（lua中的一种语法糖）
+			语法糖：指计算机语言中的某种语法，这种语法对语言功能没有影响
+			但是方便程序员使用
+
+			function SetName(str)
+			print("输入的名字是："..str)
+		end
+		 SetName("谭羽彬")
+		 SetName"谭羽彬"
+
+		 function SetArray( tbl )
+		 	for k,v in pairs(tbl)do
+		 		print(k,v)
+		 	end
+		 end
+		 SetArray({1,2,3,4,5,6,7})
+		 SetArray{1,2,3,4,5}
+
+		 	8.可变参数
+		 		（1）定义函数的时候参数可以用 ...来表示可变参数
+		 		这样在调用该函数时传递参数的个数是任意的
+
+		 		可变参数 ...必须放在所有参数的最后
+		 		function  add( ... )
+				print(1234)
+			end
+			add(1,2,"ssa",1,5)
+
+			（2）可变参数的使用 类似于 多重赋值
+			可以使用对应个数的变量来接收对应的参数 (从左往右挨个获取参数)
+			由于不知道调用者参入的参数个数，所以一般不用这种方法读取可变参数
+			function add( ... )
+			a,b=...
+			print(a,b)
+			local c = a+b
+			print(c)
+			end
+			add(50,60,80)
+			（3）将可变参数转换为遍历表读取参数内容
+			function MultiParaVal( ... )
+			
+			for k,v in pairs({...}) do
+				print(k,v)
+			end
+		end
+		MultiParaVal(1,2,3,"TAM","yu","bin")
+		（4）简化可变参数的写法
+		lua中有个内置变量 arg 可以用来代替{...}
+		function MultiParaVal( ... )
+			--n代表传入的可变参数的个数
+			print(arg.n)
+			for k,v in pairs(arg) do
+				print(k,v)
+			end
+		end
+		MultiParaVal(1,2,3,"TAM","yu","bin")
+
+		注意：使用...和arg不能混合使用，只能使用一个
+			arg变量在函数内部表示可变参数的表
+			arg变量在函数外部存放当前lua脚本所在的文件目录
+			尽量不要定义arg为自定义变量名，以免覆盖内置变量
+			（5）如果可变参数中带有nil变量可以使用lua内置函数 
+			select() 函数需要两个参数，第一个是"#"或者数字，第二个是可变参数 ...
+			如果第一个参数是"#"返回可变参数的个数
+			如果第一个参数是数字，函数返回从当前位置到最后一个可变参数的所有参数
+			function MultiParaVal( ... )
+			--输出可变参数的个数
+			print(select("#",...))
+			for i=1, select("#",...)do
+				--print(select(i,...))
+				value = select(i,...)
+				print(value)
+			end
+
+		end
+		MultiParaVal(1,2,3,"TAM","yu",nil,"bin")
+		注意：用select来获取可变参数，不可以与arg混用
+
+		十五、标准函数库
+			lua标准函数库主要分为三大类
+			数学函数
+			字符串函数
+			io等操作系统库
+			1.数学函数库
+			(1)math.huge 	表示无穷大
+			（2）math.abs()	绝对值 math.abs(-10) = 10
+			(3)math.ceil()	向上取整	math.ceil(-10.4) = -10
+			(4)math.floor() 向下取整	math.floor(-10.4) = -11
+			（5）math.sin(弧度)	math.cos(弧度) 三角函数	math.cos(math.pi/2) = 6.1232339957368e-017
+			(6)math.rad()	角度转弧度	math.rad(180)) = math.pi
+			(7)math.max()	math.min()	取最大最小值
+			（8）math.pow()	计算x的y次方	math.pow(5,3) = 125
+			(9)math.sqrt()	返回数字的平方根	
+
+
+				随机函数（伪随机）
+				1.需要在	math.random()之前为随机函数设置随机种子： math.randomseed(xxxxx)
+				2.lua对随机种子有一定的要求，两次间隔不能太近,位数要足够的多
+
+
+			2.字符串函数库
+				(1)string.len() 返回字符串长度	使用#也可以返回字符串长度	
+							#"谭羽彬"--9
+					string.len("TAM")--3
+				（2）string.rep("string",n)	返回字符串重复n次的结果	
+				 (3)string.lower("string")	将字符串大写字母转小写
+				 (4)string.upper("string")	将字符串小写字母转大写
+				（5）string.sub("string",i,j)	提取字符串s的第i个到第j个字符	i和j可以是负数 负数代表从后向前倒数个字符
+						一个汉字占3个字符长度
+				（6）string.find("string",n)在字符串中寻找和n匹配的字串，如果找到，返回匹配的起始索引和结束索引，没找到则返回nil,只会寻找与之匹配的第一个字串 可以查找汉字字串
+					s = "Hello World"
+					string.find(s,"llo") =3	5
+
+				（7）string.reverse("string")	将字符串反转	不能将汉字字符反转
+				（8）string.format("string",...)	返回格式化后的字符串
+					string1 = "lua"
+					string2 = "Tutorila"
+					基本格式化
+					print(string.format("基本格式化 %s %s",string1,string2))
+
+					--日期格式化
+				year = 2019
+				month = 6
+				day = 16
+				print(string.format("当前日期 %02d / %02d / %03d" ,day,month,year))
+					--十进制格式化
+				print(string.format("%.4f",10/3))
+
+				占位符： 
+				%c  --接收一个数字，并将其转化为ASCII码中对应的字符
+				%o 	--接受一个数字，并将其转化为一个8进制数字
+				%u  --接受一个数字，并将其转化为一个无符号的整数格式		如果是负数以数据溢出的形式返回，小数舍弃
+				%x  --接受一个十进制数字，并将其转化为一个16进制数字
+				%e  --接受一个数字，并将其转化为科学计数法格式
+				%f  --接受一个十进制数字，并将其转化为浮点数
+				%q	--接收一个字符串，并将其转化为可以被安全被lua编辑器读入的格式
+				%s  --接收字符串并按照给定参数的时候将该字符串赋值到位置上
+
+				为进一步细化格式，%后可以添加参数
+				（1）符号：一个+号表示其后的数字显示正号，默认情况下只有负数才显示符号
+				（2）占位符：一个0，在后面指定了字符串的宽度
+			3.操作系统函数库
+				os.date()	返回当前系统日期	print(os.date())
+
+				os.time()	返回当前系统的时间戳
+				时间戳：	是指格林威治时间1970年1月1日00时00分00秒（北京时间1970年1月1日08时00分00秒）到当前的总秒数
+
+				可以通过传参的方式，计算传入时间的时间戳
+				print(os.time({year = 2000,month = 2,day = 2,hour = 2,min = 15,sec = 0}))--时间转时间戳
+
+				可以用os.time将一个时间戳转换成时间
+
+				4.利用时间戳产生随机数
+
+		function getRandom(min,max)
+			-- body
+			local strTime = tostring( string.reverse( os.time() ))
+			local Random = string.sub(strTime,1,5)
+			math.randomseed(strTime)
+			return	math.random(min,max)
+			end
+			print(getRandom(5,60))
+
+		十六.函数的尾调用
+			lua中可以在一个函数中，使用return返回另一个函数，这种语法叫尾调用
+			一个调用是另一个函数的最后一个动作
+			--非尾调用
+			function FunA(  )
+				-- body
+				local  res = math.abs(-88)
+				return res
+					end
+					--尾调用
+					function FunA( )
+						-- body
+						return math.abs(-88)
+					end
+						--非尾调用
+
+					function FunB(  )
+						-- body
+						local res = FunA()
+						return res
+					end
+			--尾调用
+					function FunB( )
+						-- body
+						return FunA()
+					end
+
+					作用1：递归算法		由于尾调用不会占用堆栈控件，所以可以优化递归
+					function RecurFunc( num )
+						-- body
+						print(num)
+						return RecurFunc(num-1)
+					end
+					注意事项：
+				封装函数中的	return x()	与		return (x())含义不同
+				后者指一个返回结果，前者返回函数中的所有返回值（多返回值）
+				function FunA( )
+					-- body
+					return 1,2,3,4
+				end
+
+				function FunB(  )
+					-- body
+					return (FunA())
+				end
+
+				print(FunB())
+		十七、闭包
+		--不是闭包
+		--通过以下实例说明 在lua中函数内部可以声明函数
+		function FUN( ... )
+			-- body
+			print("123")
+			function FunSon( ... )
+				-- body
+				print("321")
+			end
+			--return FunSon()
+		end
+		--外部函数没被调用，内部函数是不存在的
+		--闭包
+		function FUN( ... )
+			-- body
+			print("123")
+		return function (  )
+				-- body
+				print("321")
+			end
+		end
+		FunSon = Fun()
+	print(FunSon)
+	FunSon()
+	最简单的闭包
+
+	function Fun( ... )
+	-- body
+	local i = 1	--i既不是全局变量 也不是局部变量 是upvalue
+	print("---A---")
+	return function ( )
+		-- body
+		print("---B---")
+		i=i+1
+		return i
+	end
+end
+f1 = Fun()
+print(f1())
+print(f1())
+print(f1())
+
+只要在一个函数中返回了定义在这个函数内部的子函数的引用，
+那么这个函数的内部变量就会被记录
+
+概念：一个函数中嵌套子函数，子函数可以使用父函数中的局部变量
+这种行为叫做“闭包”
+闭包 = 函数 + 引用环境
+
+function Fun(i )
+	-- body
+	
+	print("---A---")
+	return function ( )
+		-- body
+		print("---B---")
+		i=i+1
+		return i
+	end
+end
+f1 = Fun(10)
+print(f1())
+print(f1())
+print(f1())
+闭包与一般函数的区别
+闭包只是形式上像函数，但实际上不上函数，
+函数只有一个实例，定义后逻辑就确定了，不会再执行时发生变化
+
+闭包的作用：1.迭代器
+			迭代器：可以在容器上遍历访问的接口，使设计人员无需关心容器的内容
+			function Its( tabArray )
+	-- body
+	local index = 1
+	return function (  )
+		-- body
+		index = index + 1
+		return tabArray[index]
+	end
+end
+tabl = {10,20,30,40,60}
+iterator = Its(tabl)
+while true do
+	local j = iterator()
+	if j ==nil then
+		break
+	end
+	print(j)
+end
+	ipairs 有3个返回值
+	第一个返回值是一个迭代函数
+	第二个返回值是传入的表
+	第三个返回值是当前集合遍历到的下标-1
