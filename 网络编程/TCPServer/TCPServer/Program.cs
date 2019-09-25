@@ -20,7 +20,7 @@ namespace TCPServer
             //创建一个Socket对象
             Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             //绑定IP和端口 回炉地址127.0.0.1或本机地址192.168.5.106
-            IPAddress iPAddress = IPAddress.Parse("192.168.5.106");
+            IPAddress iPAddress = IPAddress.Parse("192.168.5.107");
             //指定端口号
             IPEndPoint iPEndPoint = new IPEndPoint(iPAddress, 9888);
             //给Socket对象绑定IP和端口号
@@ -30,7 +30,16 @@ namespace TCPServer
             serverSocket.Listen(100);//最大同时监听数量 0为不限制
             //等待客户端的连接
             //会产生阻塞，同步的接收函数
-            Socket clientSocket = serverSocket.Accept();
+
+            //当服务器接收到一个客户端的接入时，会执行回调函数
+            serverSocket.BeginAccept(AcceptCallBack,serverSocket);
+      
+        }
+
+        static void AcceptCallBack(IAsyncResult ar)
+        {
+            Socket serverSocket = ar.AsyncState as Socket;
+              Socket clientSocket= serverSocket.EndAccept(ar);
             //已经有客户端接入
             Console.WriteLine("有客户端接入服务器:" + clientSocket.RemoteEndPoint);
             //给客户端发信息
@@ -39,18 +48,35 @@ namespace TCPServer
             //开启异步接收客户端数据
             //第一个参数：字节数组，用来存放收到的数据
             //当接收到数据是；socket会调用回调函数
-            clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None,ReceiveCallBack,clientSocket);
+            clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None, ReceiveCallBack, clientSocket);
+            serverSocket.BeginAccept(AcceptCallBack, serverSocket);
 
         }
         static void ReceiveCallBack(IAsyncResult ar)
         {
-            Socket clientSocket = ar.AsyncState as Socket;
-            int count = clientSocket.EndReceive(ar);
-            string msg = Encoding.UTF8.GetString(dataBuffer, 0, count);
-            Console.WriteLine("接收到客户端发来的消息" + msg);
-            clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None, ReceiveCallBack, clientSocket);
+            Socket clientSocket = null;
+            try
+            {
+                clientSocket = ar.AsyncState as Socket;
+                int count = clientSocket.EndReceive(ar);
+                if (count == 0)
+                {
+                    Console.WriteLine(clientSocket.RemoteEndPoint + "客户端请求离开");
+                    clientSocket.Close();
+                    return;
+                }
+                string msg = Encoding.UTF8.GetString(dataBuffer, 0, count);
+                Console.WriteLine("接收到客户端" + clientSocket.RemoteEndPoint + "发来的消息" + msg);
+                clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None, ReceiveCallBack, clientSocket);
 
-
+            }catch(Exception e)
+            {
+                Console.WriteLine(e);
+                if (clientSocket != null)
+                {
+                    clientSocket.Close();
+                }
+            }
         }
         static void StartServerSync()
         {

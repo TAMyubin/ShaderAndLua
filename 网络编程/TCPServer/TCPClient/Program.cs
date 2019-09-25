@@ -14,7 +14,7 @@ namespace TCPClient
 
             Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             //客户端不需要绑定ip和端口号（动态端口号） 不代表客户端没有
-            clientSocket.Connect(new IPEndPoint(IPAddress.Parse("192.168.5.106"), 9888));
+            clientSocket.Connect(new IPEndPoint(IPAddress.Parse("192.168.5.107"), 9888));
 
             //接收服务器发送的信息
             byte[] dataBuffer = new byte[1024];
@@ -25,6 +25,11 @@ namespace TCPClient
             while (true)
             {
                 string s = Console.ReadLine();
+                if (s == "q")
+                {
+                    clientSocket.Close();
+                    return;
+                }
                 clientSocket.Send(Encoding.UTF8.GetBytes(s));
             }
             
