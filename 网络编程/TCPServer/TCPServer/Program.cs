@@ -35,6 +35,7 @@ namespace TCPServer
             serverSocket.BeginAccept(AcceptCallBack,serverSocket);
       
         }
+        static ReadMessage message = new ReadMessage();
 
         static void AcceptCallBack(IAsyncResult ar)
         {
@@ -48,7 +49,7 @@ namespace TCPServer
             //开启异步接收客户端数据
             //第一个参数：字节数组，用来存放收到的数据
             //当接收到数据是；socket会调用回调函数
-            clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None, ReceiveCallBack, clientSocket);
+            clientSocket.BeginReceive(message.Data, message.StartIndex,message.RemainSize, SocketFlags.None, ReceiveCallBack, clientSocket);
             serverSocket.BeginAccept(AcceptCallBack, serverSocket);
 
         }
@@ -65,8 +66,13 @@ namespace TCPServer
                     clientSocket.Close();
                     return;
                 }
-                string msg = Encoding.UTF8.GetString(dataBuffer, 0, count);
-                Console.WriteLine("接收到客户端" + clientSocket.RemoteEndPoint + "发来的消息" + msg);
+                //string msg = Encoding.UTF8.GetString(dataBuffer, 0, count);
+                //Console.WriteLine("接收到客户端" + clientSocket.RemoteEndPoint + "发来的消息" + msg);
+                //首先改变StartIndex
+                message.AddStartIndex(count);
+                //解析数据
+                message.ReadMessages();
+
                 clientSocket.BeginReceive(dataBuffer, 0, 1024, SocketFlags.None, ReceiveCallBack, clientSocket);
 
             }catch(Exception e)
